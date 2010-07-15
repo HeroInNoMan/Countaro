@@ -43,6 +43,25 @@ class Partie
     end
     puts ""
   end
+
+  def modif_nom_joueur
+    puts "Modifier le nom du joueur : "
+    compteur = 1
+    @joueurs.each do |joueur|
+      print "#{compteur} : #{joueur.to_s} | "
+      compteur += 1
+    end
+    print "\n"
+    num_joueur = gets.chomp
+    if num_joueur =~ /^[12345]$/
+      puts "Nouveau nom pour " + @joueurs[Integer(num_joueur)-1] + " :"
+      @joueurs[Integer(num_joueur)-1] = gets.chomp
+      puts "Ok !"
+    else
+      puts "Saisie non valide !"
+      modif_nom_joueur
+    end
+  end
 end
 
 class Manche
@@ -244,7 +263,7 @@ def prompt_bonus
 end
 
 def wait_for_command
-  puts "n = nouvelle manche | a = ajouter un bonus | l = liste des scores | s = supprimer la dernière ligne | q = quitter"
+  puts "n = nouvelle manche | a = ajouter un bonus | h = afficher l'aide | q = quitter"
   command = gets.chomp
   case command
   when /^h(elp)?$/i
@@ -252,6 +271,7 @@ def wait_for_command
     puts "n = nouvelle manche"
     puts "a = ajouter un bonus à la manche précédente"
     puts "l = lister les scores"
+    puts "m = modifier le nom d'un joueur"
     puts "s = supprimer la dernière ligne"
     puts "q = quitter"
   when /^a$/i
@@ -281,6 +301,12 @@ def wait_for_command
     else
       $partie.manches.delete_at(($partie.manches.size) - 1)
       $partie.afficher_scores
+    end
+  when /^m$/i
+    if $partie == nil
+      puts "Créer une partie d'abord."
+    else
+      $partie.modif_nom_joueur
     end
   when /^(q|exit|quit|bye)$/i
     Process.exit
