@@ -31,19 +31,20 @@ class Partie
   end
   
   def afficher_scores
-    puts "Scores :"
+    scores = "Scores :\n"
     @joueurs.each do |joueur|
-      (LARGEUR_LIGNE - joueur.length).times do print " " end
-      print joueur
-      print "|"
+      (LARGEUR_LIGNE - joueur.length).times do scores << " " end
+      scores << joueur
+      scores << "|"
     end
-    print "\n"
+    scores << "\n"
     @manches.each do |manche|
-      manche.to_string
+      scores << manche.to_string
     end
-    puts ""
+    scores << "\n"
+    puts scores
   end
-
+  
   def modif_nom_joueur
     puts "Modifier le nom du joueur : "
     compteur = 1
@@ -82,13 +83,16 @@ class Manche
   end
   
   def to_string
+    score_manche = ""
     values.each do |value|
-      (LARGEUR_LIGNE - value.to_s.length).times do print " " end
-      print "#{value}|"
+      (LARGEUR_LIGNE - value.to_s.length).times do score_manche << " " end
+      score_manche << "#{value}|"
     end
-    print "#{@contrat.upcase}"
-    print "(#{@marge})" unless @contrat =~ /^e$/i
-    print @bonus + "\n"
+    score_manche << " #{@contrat.upcase}"
+    score_manche << "(#{@marge})" unless @contrat =~ /^e$/i
+    score_manche << @bonus
+    score_manche << "\n"
+    return score_manche
   end
   
   def calculer_scores
