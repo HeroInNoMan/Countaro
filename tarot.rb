@@ -4,6 +4,7 @@ LARGEUR_LIGNE = 10
 NB_JOUEURS = 5
 BASE_CONTRAT = 25
 BASE_ENC = 50
+SCORES_FILE = "scores.txt"
 
 class Partie
   attr_accessor :joueurs,:manches
@@ -30,7 +31,7 @@ class Partie
     @manches.push(Manche.new(contrat, marge, p1, p2))
   end
   
-  def afficher_scores
+  def to_s
     scores = "Scores :\n"
     @joueurs.each do |joueur|
       (LARGEUR_LIGNE - joueur.length).times do scores << " " end
@@ -42,7 +43,17 @@ class Partie
       scores << manche.to_string
     end
     scores << "\n"
-    puts scores
+    return scores
+  end  
+
+  def afficher_scores
+    puts to_s
+  end
+
+  def enregistrer_scores
+    file = File.new(SCORES_FILE, "a+") # append mode
+    file.write to_s
+    file.close
   end
   
   def modif_nom_joueur
@@ -278,6 +289,7 @@ def wait_for_command
     puts "m = modifier le nom d'un joueur"
     puts "s = supprimer la dernière ligne"
     puts "q = quitter"
+    puts "e = enregistrer les scores dans un fichier"
   when /^a$/i
     if $partie == nil or $partie.manches.size == 0
       puts "Enregistrer une manche."
@@ -311,6 +323,12 @@ def wait_for_command
       puts "Créer une partie d'abord."
     else
       $partie.modif_nom_joueur
+    end
+  when /^e$/i
+    if $partie == nil
+      puts "Créer une partie d'abord."
+    else
+      $partie.enregistrer_scores
     end
   when /^(q|exit|quit|bye)$/i
     Process.exit
