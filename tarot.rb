@@ -18,7 +18,7 @@ class Partie
       @joueurs[i] = gets.chomp
     end
   end
-  
+
   def nouvelle_manche
     contrat = prompt_contrat
     if(contrat =~ /^e$/i )
@@ -30,7 +30,7 @@ class Partie
     end
     @manches.push(Manche.new(contrat, marge, p1, p2))
   end
-  
+
   def to_s
     scores = "Scores :\n"
     @joueurs.each do |joueur|
@@ -44,7 +44,7 @@ class Partie
     end
     scores << "\n"
     return scores
-  end  
+  end
 
   def afficher_scores
     puts to_s
@@ -55,7 +55,7 @@ class Partie
     file.write to_s
     file.close
   end
-  
+
   def modif_nom_joueur
     puts "Modifier le nom du joueur : "
     compteur = 1
@@ -78,7 +78,7 @@ end
 
 class Manche
   attr_accessor :values,:contrat,:bonus,:p1,:p2
-  
+
   def initialize(_contrat, _marge, _p1, _p2)
     @values = Array.new(NB_JOUEURS, 0)
     @contrat = _contrat
@@ -92,7 +92,7 @@ class Manche
   def add(num_joueur, score)
     values[num_joueur] += score
   end
-  
+
   def to_string
     score_manche = ""
     values.each do |value|
@@ -105,7 +105,7 @@ class Manche
     score_manche << "\n"
     return score_manche
   end
-  
+
   def calculer_scores
     case @contrat
     when /^p$/i
@@ -145,7 +145,7 @@ class Manche
       end
     end
   end
-  
+
   def ajouter_bonus
     bonus = prompt_bonus
     case bonus
@@ -212,7 +212,7 @@ class Manche
       end
     end
   end
-  
+
   def calculer_bonus(bonus, p)
     @values.each_index do |i|
       if(i == (Integer(p) - 1))
