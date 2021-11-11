@@ -23,6 +23,7 @@ class Partie
     contrat = prompt_contrat
     if(contrat =~ /^e$/i )
       p1 = prompt_preneur(0)
+      p2 = p1
     else
       marge = prompt_marge
       p1 = prompt_preneur(1)
